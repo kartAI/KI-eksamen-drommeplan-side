@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KI-eksamen: Drømmeplan</title>
+<meta name="description" content="En eksamen for KI-systemer: kan systemet lese plandokumentene og si riktig hva som er lov å bygge på en bestemt tomt?">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Noto+Sans:wght@400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f6f9f7; --surface: #ffffff; --ink: #15302a; --muted: #5b6e66; --line: #d9e4de;
+  --accent: #178a55; --accent-soft: #dcf2e6; --accent-strong: #24bd76;
+  --warn: #c56a12; --warn-soft: #fbead8; --grey-bar: #c9d5cf; --zone: #f6e7a6;
+  --display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --body: "Noto Sans", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1613; --surface: #17211d; --ink: #e5efe9; --muted: #9db0a7; --line: #2a3832;
+    --accent: #3fd08f; --accent-soft: #173a2a; --accent-strong: #3fd08f;
+    --warn: #f0a356; --warn-soft: #3a2a18; --grey-bar: #3a4a43; --zone: #5a5228; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1613; --surface: #17211d; --ink: #e5efe9; --muted: #9db0a7; --line: #2a3832;
+  --accent: #3fd08f; --accent-soft: #173a2a; --accent-strong: #3fd08f;
+  --warn: #f0a356; --warn-soft: #3a2a18; --grey-bar: #3a4a43; --zone: #5a5228; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; padding: 0 16px; }
+.wrap { max-width: 980px; margin: 0 auto; padding: 40px 0 64px; display: grid; gap: 56px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; }
+h2 { font-size: clamp(1.4rem, 3vw, 1.85rem); font-weight: 600; }
+h3 { font-size: 1.05rem; font-weight: 600; }
+p { margin: 0; max-width: 65ch; }
+a { color: var(--accent); }
+.eyebrow { font-family: var(--display); font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+.lead { font-size: 1.15rem; color: var(--muted); }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+section { display: grid; gap: 20px; }
+.head { display: grid; gap: 8px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+svg text { font-family: var(--body); fill: var(--ink); }
+svg .t-muted { fill: var(--muted); }
+svg .t-display { font-family: var(--display); font-weight: 600; }
+.figure { overflow-x: auto; }
+.figure svg { display: block; width: 100%; height: auto; min-width: 560px; }
+.hero { display: grid; grid-template-columns: 1.15fr .85fr; gap: 32px; align-items: center; }
+.hero > div { min-width: 0; display: grid; gap: 16px; }
+.hero svg { width: 100%; height: auto; max-width: 360px; justify-self: center; }
+.funnel { display: grid; gap: 14px; }
+.frow { display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 16px; align-items: center; }
+.fbar { height: 44px; border-radius: 8px; background: var(--accent-strong); display: flex; align-items: center; padding-left: 14px; color: #fff; font-family: var(--display); font-weight: 600; font-size: 1.05rem; min-width: 0; white-space: nowrap; }
+.fbar.mid { background: var(--accent); }
+.flabel { font-size: .9rem; color: var(--muted); line-height: 1.35; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.two > * { min-width: 0; }
+.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 8px; align-content: start; }
+.card.exam { border: 2px solid var(--accent); }
+.card .big { font-family: var(--display); font-size: 2rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; line-height: 1; }
+.card p { font-size: .92rem; color: var(--muted); }
+.ladder { display: grid; gap: 10px; }
+.rung { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+.rung .ic { width: 44px; height: 44px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); }
+.rung.read .ic { background: var(--warn-soft); }
+.rung p { font-size: .92rem; color: var(--muted); }
+.pill { font-size: .78rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.pill.ok { background: var(--accent-soft); color: var(--accent); }
+.pill.no { background: var(--warn-soft); color: var(--warn); }
+.callout { border-left: 4px solid var(--accent-strong); padding: 6px 0 6px 16px; font-size: 1.05rem; }
+.fields { display: flex; flex-wrap: wrap; gap: 8px; }
+.fields span { font-size: .85rem; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); }
+.verdicts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.verdict { border-radius: 10px; padding: 14px; display: grid; gap: 6px; }
+.verdict b { font-family: var(--display); }
+.verdict p { font-size: .9rem; }
+.v-ok { background: var(--accent-soft); }
+.v-bad { background: var(--warn-soft); }
+.v-miss { background: var(--surface); border: 1px dashed var(--grey-bar); }
+.flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; counter-reset: s; }
+.flow div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.flow div::before { counter-increment: s; content: counter(s); font-family: var(--display); font-weight: 700; color: #fff; background: var(--accent-strong); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; }
+.flow p { font-size: .9rem; color: var(--muted); }
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; }
+.step { padding: 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface); display: grid; gap: 8px; align-content: start; }
+.step ul { margin: 0; padding-left: 18px; font-size: .9rem; color: var(--muted); display: grid; gap: 4px; }
+.tag { font-size: .75rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; }
+.tag.done { color: var(--accent); } .tag.wait { color: var(--warn); } .tag.next { color: var(--muted); }
+footer { font-size: .82rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 16px; display: grid; gap: 6px; }
+@media (max-width: 720px) {
+  .hero, .two, .three, .verdicts { grid-template-columns: 1fr; }
+  .flow { grid-template-columns: 1fr 1fr; }
+  .frow { grid-template-columns: 1fr; gap: 4px; }
+  .rung { grid-template-columns: 40px minmax(0, 1fr); }
+  .rung .pill { grid-column: 2; justify-self: start; }
+}
+@media (max-width: 420px) { .flow { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <div>
+      <span class="eyebrow">KI-eksamen · versjon 0.1 · november 2026</span>
+      <h1>Kan KI-en lese reguleringsplanen?</h1>
+      <p class="lead">Dette er en eksamen for KI-systemer i byggesak. Systemet får plandokumentene for én eiendom og skal svare på hva som er lov å bygge der: hvor høyt, hvor mye og hvor på tomta.</p>
+      <p>Svarene sammenlignes med en fasit skrevet av fagfolk. Leverandører kan koble sitt eget system til eksamenen og få vite hvor godt det treffer, og hvor det bommer.</p>
+    </div>
+    <svg viewBox="0 0 360 300" role="img" aria-label="Illustrasjon: en tomt i et plankart med et hus og et spørsmålstegn">
+      <rect x="10" y="20" width="340" height="260" rx="18" fill="var(--surface)" stroke="var(--line)"/>
+      <path d="M30 40 H200 V150 H30 Z" fill="var(--accent-soft)"/>
+      <path d="M200 40 H330 V150 H200 Z" fill="var(--zone)" opacity=".85"/>
+      <path d="M30 150 H330 V178 H30 Z" fill="var(--grey-bar)"/>
+      <path d="M30 178 H160 V260 H30 Z" fill="var(--zone)" opacity=".85"/>
+      <path d="M160 178 H330 V260 H160 Z" fill="var(--accent-soft)"/>
+      <rect x="210" y="58" width="104" height="78" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="7 5"/>
+      <rect x="228" y="76" width="44" height="34" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M224 78 L250 58 L276 78" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <text x="56" y="100" class="t-muted" font-size="13">Friområde</text>
+      <text x="214" y="168" class="t-muted" font-size="11">Vei</text>
+      <text x="50" y="222" class="t-muted" font-size="13">Bolig</text>
+      <circle cx="300" cy="212" r="34" fill="var(--accent-strong)"/>
+      <text x="300" y="226" text-anchor="middle" font-size="40" class="t-display" style="fill:#fff">?</text>
+    </svg>
+  </header>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Fasiten</span>
+      <h2>Svarene finnes allerede, i Drømmeplan</h2>
+      <p>Drømmeplan er en tjeneste fra Direktoratet for byggkvalitet (DiBK). Der har fagfolk skrevet, på vanlig norsk, hva planene betyr for hver enkelt eiendom. Disse tekstene er fasiten i eksamenen.</p>
+    </div>
+    <div class="three">
+      <div class="card"><h3>Ekte eiendommer</h3><p>Oppgavene er hentet fra virkelige eiendommer med virkelige planer, med alt rotet som følger med: gamle planer, flere planer oppå hverandre og kart i ulike formater.</p></div>
+      <div class="card"><h3>Fasit skrevet av fagfolk</h3><p>Fasiten er ikke laget av en KI. Den er skrevet av fagfolk for innbyggere, og vi bruker den slik den er.</p></div>
+      <div class="card"><h3>Like svar telles én gang</h3><p>Naboer i samme felt får ofte nøyaktig samme svar. Hvert ulike svar blir derfor én oppgave, så ingen kan samle poeng på gjentakelser.</p></div>
+    </div>
+    <p class="muted">Vi bruker bare data vi har lov til å bruke. Første versjon dekker et utvalg eiendommer, og flere kommer til etter hvert som rettighetene kommer på plass.</p>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Oppgaven</span>
+      <h2>Én eiendom, én pakke, ett utfylt svarskjema</h2>
+      <p>Hver oppgave er en lukket pakke. Alt som trengs for å svare, ligger i pakken. Da får alle systemer nøyaktig samme utgangspunkt, og ingen kan slå opp svaret andre steder.</p>
+    </div>
+    <div class="panel figure">
+      <svg viewBox="0 0 900 300" role="img" aria-label="Oppgavepakke med fem dokumenter går inn i KI-systemet, som fyller ut et svarskjema">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--accent)"/></marker></defs>
+        <rect x="10" y="20" width="300" height="260" rx="16" fill="var(--accent-soft)"/>
+        <text x="30" y="50" class="t-display" font-size="16">Oppgavepakken</text>
+        <g font-size="13">
+          <rect x="30" y="66" width="125" height="62" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+          <line x1="44" y1="84" x2="138" y2="84" stroke="var(--grey-bar)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="44" y1="96" x2="124" y2="96" stroke="var(--grey-bar)" stroke-width="5" stroke-linecap="round"/>
+          <text x="44" y="118">Bestemmelser</text>
+          <rect x="166" y="66" width="125" height="62" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+          <rect x="180" y="78" width="46" height="22" fill="var(--zone)"/><rect x="226" y="78" width="50" height="22" fill="var(--accent-soft)"/>
+          <text x="180" y="118">Plankart</text>
+          <rect x="30" y="138" width="125" height="62" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+          <line x1="44" y1="156" x2="138" y2="156" stroke="var(--grey-bar)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="44" y1="168" x2="118" y2="168" stroke="var(--grey-bar)" stroke-width="5" stroke-linecap="round"/>
+          <text x="44" y="190">Kommuneplan, tekst</text>
+          <rect x="166" y="138" width="125" height="62" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+          <rect x="180" y="150" width="96" height="22" fill="var(--accent-soft)"/><rect x="204" y="154" width="30" height="14" fill="var(--zone)"/>
+          <text x="180" y="190">Kommuneplan, kart</text>
+          <rect x="30" y="210" width="261" height="56" rx="10" fill="var(--surface)" stroke="var(--line)"/>
+          <rect x="44" y="222" width="44" height="32" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 4"/>
+          <text x="102" y="236">Eiendommen</text>
+          <text x="102" y="254" class="t-muted" font-size="11">adresse, gnr/bnr og grense</text>
+        </g>
+        <path d="M322 150 H382" stroke="var(--accent)" stroke-width="3" marker-end="url(#ah)"/>
+        <rect x="392" y="95" width="130" height="110" rx="20" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
+        <circle cx="436" cy="140" r="7" fill="var(--ink)"/><circle cx="478" cy="140" r="7" fill="var(--ink)"/>
+        <path d="M434 166 Q457 180 480 166" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+        <text x="457" y="228" text-anchor="middle" font-size="13">Leverandørens</text>
+        <text x="457" y="244" text-anchor="middle" font-size="13">KI-system</text>
+        <path d="M534 150 H594" stroke="var(--accent)" stroke-width="3" marker-end="url(#ah)"/>
+        <rect x="604" y="20" width="286" height="260" rx="16" fill="var(--surface)" stroke="var(--line)"/>
+        <text x="624" y="50" class="t-display" font-size="16">Svarskjemaet</text>
+        <g font-size="13">
+          <text x="624" y="82">Formål</text><text x="760" y="82" class="t-muted">Bolig</text>
+          <text x="624" y="108">Utnyttelse</text><text x="760" y="108" class="t-muted">24 % BYA</text>
+          <text x="624" y="134">Høyder</text><text x="760" y="134" class="t-muted">gesims 6,5 m</text>
+          <text x="624" y="160">Plassering</text><text x="760" y="160" class="t-muted">byggegrense</text>
+          <text x="624" y="186">Parkering</text><text x="760" y="186" class="t-muted">2 per bolig</text>
+          <text x="624" y="212" class="t-muted">… og flere felt</text>
+        </g>
+        <rect x="624" y="228" width="246" height="38" rx="6" fill="var(--accent-soft)"/>
+        <text x="636" y="244" font-size="12">Hvert felt: svar, kilder,</text>
+        <text x="636" y="259" font-size="12">begrunnelse og status</text>
+      </svg>
+    </div>
+    <div class="panel" style="display:grid; gap:14px;">
+      <h3>Svarskjemaet følger saksbehandlerens sjekkliste</h3>
+      <div class="fields">
+        <span>Gjeldende planer</span><span>Arealformål</span><span>Utnyttelse</span><span>Høyder</span><span>Plassering</span><span>Tak</span><span>Parkering</span><span>Garasje og uthus</span><span>… med flere</span>
+      </div>
+      <p class="muted">Hvis dokumentene ikke sier noe om et tema, skal systemet si det i stedet for å gjette. Lov og forskrift er utenfor oppgaven: systemet skal bare bruke det som står i pakken.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Øving, prøve og eksamen</span>
+      <h2>Oppgavene er delt i tre</h2>
+      <p>De fleste oppgavene holdes tilbake til selve eksamenen. Alle eiendommer fra samme plan havner i samme del, så ingen kan «kjenne igjen» et svar fra øvingsoppgavene.</p>
+    </div>
+    <div class="three">
+      <div class="card"><span class="big">75</span><h3>Øvingsoppgaver</h3><p>Med fasit. Leverandøren kan se hva som var riktig, og trene systemet sitt.</p></div>
+      <div class="card"><span class="big">76</span><h3>Prøveeksamen</h3><p>Uten fasit, men med tilbakemelding per oppgave, så leverandøren ser hvor systemet bommer.</p></div>
+      <div class="card exam"><span class="big">226</span><h3>Eksamen</h3><p>Den største delen. Fasiten holdes skjult, og leverandøren får bare et samlet resultat. Dette er resultatet som teller.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">Vurderingen</span>
+      <h2>Riktig svar, og riktig grunnlag</h2>
+      <p>Svarene sammenlignes med fasiten, tema for tema. Det holder ikke å treffe: systemet må også vise hvor i dokumentene svaret står, og det sjekkes mot pakken. Detaljene i vurderingen holder vi internt, slik at systemene blir gode på oppgaven og ikke på å tilpasse seg sensoren.</p>
+    </div>
+    <div class="two">
+      <div class="ladder" aria-label="Tre ting systemet viser for hvert tema">
+        <div class="rung"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12l4 4 10-10" stroke="var(--accent)" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg></div><div><h3>Svaret</h3><p>Hva som gjelder for eiendommen.</p></div><span class="pill ok">mot fasiten</span></div>
+        <div class="rung"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2" stroke="var(--accent)" stroke-width="2" fill="none"/><path d="M8 8h8M8 12h8M8 16h5" stroke="var(--accent)" stroke-width="2"/></svg></div><div><h3>Kildene</h3><p>Hvilken paragraf eller hvilket kartobjekt svaret bygger på.</p></div><span class="pill ok">mot pakken</span></div>
+        <div class="rung read"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 6h16v10H9l-5 4z" stroke="var(--warn)" stroke-width="2" fill="none" stroke-linejoin="round"/></svg></div><div><h3>Begrunnelsen</h3><p>Hvordan kildene fører til svaret.</p></div><span class="pill no">leses</span></div>
+      </div>
+      <div class="panel" style="display:grid; gap:16px; align-content:start;">
+        <h3>Hvorfor kilder?</h3>
+        <p>I en tidligere studie fant vi at kilder avslører feil som et riktig svar kan skjule. Et system som treffer ved en tilfeldighet, eller som har latt seg lure av feil dokument, blir avslørt av kildene sine.</p>
+        <p class="callout">Derfor ber vi om <b>svar og kilder for hvert tema</b>. Kilder kan sjekkes direkte mot dokumentene, mens en fritekst-forklaring bare kan leses.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="head">
+      <span class="eyebrow">For leverandører</span>
+      <h2>Slik kobler du deg på</h2>
+      <p>Eksamenen er et grensesnitt (API) som systemet ditt snakker med: det henter oppgaver og sender inn svar. Du trenger ingen spesiell programvare fra oss. I versjon 0.1 kjører grensesnittet internt i prosjektet, så ta kontakt for tilgang.</p>
+    </div>
+    <div class="flow">
+      <div><h3>Registrer systemet</h3><p>Du oppgir navnet på systemet og får et løpenummer.</p></div>
+      <div><h3>Hent oppgavene</h3><p>Last ned pakken for hver oppgave, som en zip-fil.</p></div>
+      <div><h3>Send inn svar</h3><p>Ett utfylt svarskjema per oppgave. Feil i skjemaet meldes tilbake med en gang.</p></div>
+      <div><h3>Få resultatet</h3><p>Svarene vurderes samlet, og du får tilbake hvor systemet treffer og hvor det bommer.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Bygger på Drømmeplan (DiBK), Nasjonal arealplanbase (NAP, DiBK) og kommunale plandokumenter.</p>
+    <p>Del av et doktorgradsprosjekt om KI i byggesaksbehandling. Teknisk dokumentasjon deles med leverandører som deltar.</p>
+  </footer>
+</div>
+</body>
+</html>
